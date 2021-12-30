@@ -274,7 +274,7 @@ $sections: map-merge(
                         &, &:focus, &:active {
                             color: darken($color, 5%);
                         }
-                
+
                         &:hover {
                             color: $color;
                         }
@@ -286,6 +286,11 @@ $sections: map-merge(
                 line-height: 1.5em;
                 font-family: $font-family-serif;
                 font-size: $h1-font-size * 1.2;
+
+                small {
+                    font-size: $small-font-size * 0.8;
+                    color: lighten($color, 30%);
+                }
             }
         }
 
@@ -307,7 +312,7 @@ $sections: map-merge(
             background-color: darken($color, 10%);
         }
 
-        .sidebar {            
+        .sidebar {
             @include media-breakpoint-up(md) {
                 padding-bottom: $spacer * 1.5;
                 margin-bottom: $spacer * 1.5;
@@ -323,17 +328,27 @@ $sections: map-merge(
                 opacity: 0.6;
                 transition: opacity 0.5s;
                 display: block !important;
-                
+
                 &:hover {
                     opacity: 1;
                 }
             }
 
-            padding-top: $spacer;            
+            padding-top: $spacer;
+        }
 
+        // sidebar-root elements can be nested to show root-level styling inside a sidebar
+        .sidebar-root {
+            // Root-level items
             & > .sidebar-nav-item {
                 margin-bottom: $spacer;
                 font-weight: $font-weight-bold;
+
+                &.sidebar-header {
+                    margin-bottom: $spacer * 0.25;
+                    color: $gray-500;
+                    text-transform: uppercase;
+                }
 
                 &.has-children {
                     border-bottom: 1px solid $gray-300;
@@ -344,49 +359,50 @@ $sections: map-merge(
             & > .sidebar-nav-children {
                 margin-bottom: $spacer;
                 font-size: $font-size-sm;
-                
+
                 & > .sidebar-nav-children {
                     font-size: $font-size-sm * 0.875;
                     padding-left: $spacer * 0.5;
                 }
             }
-        }
 
-        .sidebar-nav-item {
-            padding-left: $spacer * 0.5;
-            padding-right: $spacer * 0.5;
-            padding-bottom: $spacer * 0.25;
-            padding-top: $spacer * 0.25;
-            margin-bottom: $spacer * 0.25;
-            color: $gray-600;
+            // All items
+            & .sidebar-nav-item {
+                padding-left: $spacer * 0.5;
+                padding-right: $spacer * 0.5;
+                padding-bottom: $spacer * 0.25;
+                padding-top: $spacer * 0.25;
+                margin-bottom: $spacer * 0.25;
+                color: $gray-600;
 
-            &.has-children {
-                margin-bottom: 0;
-            }
+                &.has-children {
+                    margin-bottom: 0;
+                }
 
-            &.active {
-                font-weight: $font-weight-bold;
-                color: $color;
-                background-color: lighten($color, 30%);
-                
+                &.active {
+                    font-weight: $font-weight-bold;
+                    color: $color;
+                    background-color: lighten($color, 30%);
+
+                    & a {
+                        &, &:focus, &:active {
+                            color: $color;
+                        }
+
+                        &:hover {
+                            color: darken($color, 30%);
+                        }
+                    }
+                }
+
                 & a {
                     &, &:focus, &:active {
-                        color: $color;
+                        color: $gray-600;
                     }
-            
+
                     &:hover {
                         color: darken($color, 30%);
                     }
-                }
-            }
-            
-            & a {
-                &, &:focus, &:active {
-                    color: $gray-600;
-                }
-        
-                &:hover {
-                    color: darken($color, 30%);
                 }
             }
         }
@@ -426,7 +442,7 @@ $sections: map-merge(
       visibility: visible !important;
     }
     min-height: 200px;
-  
+
     svg {
       min-height: 200px;
     }

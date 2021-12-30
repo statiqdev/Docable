@@ -1,0 +1,33 @@
+<div class="sidebar-nav-item @(Document.IdEquals(Model) ? "active" : null)">
+    @Html.DocumentLink(Model)
+</div>
+@foreach (IDocument document in OutputPages.GetChildrenOf(Model))
+{
+    <div class="sidebar-nav-item @(Document.IdEquals(document) ? "active" : null) @(OutputPages.GetChildrenOf(document).Any() ? "has-children" : null)">
+        @Html.DocumentLink(document)
+    </div>
+
+    @if (OutputPages.GetChildrenOf(document).Any())
+    {
+        <div class="sidebar-nav-children">
+            @foreach (IDocument child in OutputPages.GetChildrenOf(document))
+            {
+                <div class="sidebar-nav-item @(Document.IdEquals(child) ? "active" : null) @(OutputPages.GetChildrenOf(child).Any() ? "has-children" : null)">
+                    @Html.DocumentLink(child)
+                </div>
+
+                @if (OutputPages.GetChildrenOf(child).Any())
+                {
+                    <div class="sidebar-nav-children">
+                        @foreach (IDocument child2 in OutputPages.GetChildrenOf(child))
+                        {
+                            <div class="sidebar-nav-item @(Document.IdEquals(child2) ? "active" : null)">
+                                @Html.DocumentLink(child2)
+                            </div>
+                        }
+                    </div>
+                }
+            }
+        </div>
+    }
+}

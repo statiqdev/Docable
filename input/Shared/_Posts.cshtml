@@ -2,7 +2,7 @@
     @foreach (IDocument post in Document.GetChildren())
     {
         IDocument topicDocument = OutputPages[$"news/topics/{post.GetString("topic")}/index.html"].First();
-        string excerpt = post.GetString(Statiq.Html.HtmlKeys.Excerpt);
+        string excerpt = post.GetString(Keys.Excerpt);
         <div>
             <div class="p-3 mb-2 bg-light page-box">
                 <h4>@Html.DocumentLink(post)</h4>

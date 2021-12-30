@@ -1,0 +1,29 @@
+@{
+    Layout = "/_Layout.cshtml";
+}
+
+@section Sidebar {
+	@await Html.PartialAsync("Api/Sidebar/_" + Document.GetString(CodeAnalysisKeys.Kind))
+}
+
+@section Title {
+    @{
+    	IDocument containingType = Document.GetDocument(CodeAnalysisKeys.ContainingType);
+    	while(containingType != null)
+    	{
+		    <div><small>@Context.GetTypeLink(containingType).</small></div>
+    		containingType = containingType.GetDocument(CodeAnalysisKeys.ContainingType);
+    	}
+    }
+    <div>@Html.Raw(Context.GetFormattedHtmlName(Document.GetTitle())) <small>@Document.GetString(CodeAnalysisKeys.SpecificKind)</small></div>
+}
+
+@section ChildPages {
+}
+
+
+@await Html.PartialAsync("Api/_ApiBeforeContent")
+@await Html.PartialAsync("Api/Kind/_" + Document.GetString(CodeAnalysisKeys.Kind))
+@await Html.PartialAsync("Api/_ApiAfterContent")
+
+@{ IgnoreBody(); }

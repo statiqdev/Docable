@@ -29,8 +29,8 @@
         <script src="https://cdn.jsdelivr.net/npm/prismjs@1.19.0/components/prism-core.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/prismjs@1.19.0/plugins/autoloader/prism-autoloader.min.js" data-no-mirror></script>
         <script src="https://cdn.jsdelivr.net/npm/quicklink@2.0.0/dist/quicklink.umd.js"></script>
-        
-		@RenderSection(SectionNames.Head, false)
+
+        @await RenderSectionAsync(SectionNames.Head, false)
 
         @{
             string title = @Document.ContainsKey(Keys.Title) ? $"Statiq - {Document.GetString(Keys.Title)}" : "Statiq";
@@ -92,7 +92,7 @@
             </div>
             @if (IsSectionDefined(SectionNames.Splash))
             {
-                @RenderSection(SectionNames.Splash, false)
+                @await RenderSectionAsync(SectionNames.Splash, false)
             }
             @{
                 string section = Document.Destination.Segments.Length > 1 ? Document.Destination.Segments[0].ToString() : null;
@@ -116,15 +116,22 @@
                                             }
                                         </div>
                                         <div class="text-white m-0 title">
-                                            @(Document.GetString(Keys.Title) ?? Document.GetTitle())                                            
-                                            @if (Document.GetInt(Keys.Index) > 1)
+                                            @if (IsSectionDefined(SectionNames.Title))
                                             {
-                                                <small>(Page @Document.GetString(Keys.Index))</small>
+                                                @await RenderSectionAsync(SectionNames.Title, false)
+                                            }
+                                            else
+                                            {
+                                                @(Document.GetString(Keys.Title) ?? Document.GetTitle())
+                                                @if (Document.GetInt(Keys.Index) > 1)
+                                                {
+                                                    <small>(Page @Document.GetString(Keys.Index))</small>
+                                                }
                                             }
                                         </div>
                                         @if (IsSectionDefined(SectionNames.Subtitle))
                                         {
-                                            @RenderSection(SectionNames.Subtitle, false)
+                                            @await RenderSectionAsync(SectionNames.Subtitle, false)
                                         }
                                     </div>
                                     @if (!Document.GetBool(SiteKeys.NoSidebar))
@@ -140,7 +147,7 @@
                         </div>
                     </div>
                     <div id="undertitle">
-                        <div class="container-xl">                            
+                        <div class="container-xl">
                             <div class="row">
                                 @if (Document.GetBool(SiteKeys.NoSidebar))
                                 {
@@ -186,90 +193,54 @@
                                     else
                                     {
                                         <div class="col-md-3 col-lg-2 bg-body">
-                                            <div id="collapse-sidebar" class="sidebar collapse px-0 px-md-3 pt-3">
+                                            <div id="collapse-sidebar" class="sidebar sidebar-root collapse px-0 px-md-3 pt-3">
                                                 @if (IsSectionDefined(SectionNames.Sidebar))
                                                 {
-                                                    @RenderSection(SectionNames.Sidebar, false)
+                                                    @await RenderSectionAsync(SectionNames.Sidebar, false)
                                                 }
                                                 else
                                                 {
-                                                    <div class="sidebar-nav-item @(Document.IdEquals(root) ? "active" : null)">
-                                                        @Html.DocumentLink(root)
-                                                    </div>
-
-                                                    @foreach (IDocument document in OutputPages.GetChildrenOf(root))
-                                                    {
-                                                        <div class="sidebar-nav-item @(Document.IdEquals(document) ? "active" : null) @(OutputPages.GetChildrenOf(document).Any() ? "has-children" : null)">
-                                                            @Html.DocumentLink(document)
-                                                        </div>
-
-                                                        @if (OutputPages.GetChildrenOf(document).Any())
-                                                        {
-                                                            <div class="sidebar-nav-children">
-                                                                @foreach (IDocument child in OutputPages.GetChildrenOf(document))
-                                                                {                                                                
-                                                                    <div class="sidebar-nav-item @(Document.IdEquals(child) ? "active" : null) @(OutputPages.GetChildrenOf(child).Any() ? "has-children" : null)">
-                                                                        @Html.DocumentLink(child)
-                                                                    </div>
-
-                                                                    @if (OutputPages.GetChildrenOf(child).Any())
-                                                                    {
-                                                                        <div class="sidebar-nav-children">
-                                                                            @foreach (IDocument child2 in OutputPages.GetChildrenOf(child))
-                                                                            {
-                                                                                <div class="sidebar-nav-item @(Document.IdEquals(child2) ? "active" : null)">
-                                                                                    @Html.DocumentLink(child2)
-                                                                                </div>
-                                                                            }
-                                                                        </div>
-                                                                    }
-                                                                }
-                                                            </div>
-                                                        }
-                                                    }
+                                                    await Html.RenderPartialAsync("_Sidebar", root);
                                                 }
                                             </div>
                                         </div>
                                         <div id="content" class="col-md-9 col-lg-8 p-4 pt-md-0 bg-white">
                                             @RenderBody()
 
-                                            @if (!Document.GetBool(SiteKeys.NoChildPages) && OutputPages.GetChildrenOf(Document).Any())
+                                            @if (IsSectionDefined(SectionNames.ChildPages))
                                             {
-                                                <h4 class="h-section mb-2">Child Pages</h4>
-                                                @foreach(IDocument child in OutputPages.GetChildrenOf(Document))
-                                                {
-                                                    string excerpt = child.GetString(Statiq.Html.HtmlKeys.Excerpt);
-                                                    <div>
-                                                        <div class="p-3 mb-2 bg-light page-box">
-                                                            <h4>@Html.DocumentLink(child)</h4>
-                                                            @if(!string.IsNullOrEmpty(excerpt))
-                                                            {
-                                                                <div class="font-size-sm">@Html.Raw(excerpt)</div>
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                }
+                                                @await RenderSectionAsync(SectionNames.ChildPages, false)
+                                            }
+                                            else
+                                            {
+                                                await Html.RenderPartialAsync("_ChildPages");
                                             }
                                         </div>
                                     }
                                 }
                                 <div class="col-lg-2 d-none d-lg-block bg-body pl-3 pt-3">
                                     @{
-                                        IReadOnlyList<IDocument> headings = Document.GetDocumentList(Statiq.Html.HtmlKeys.Headings);
+                                        IReadOnlyList<IDocument> headings = Document.GetDocumentList(Keys.Headings);
                                         if (headings.Count > 0)
                                         {
                                             <div class="border-bottom mb-3">
                                                 <p class="small font-weight-bold">On This Page</p>
                                                 @foreach (IDocument heading in headings)
                                                 {
-                                                    <p class="small"><a href="#@(heading.GetString(Statiq.Html.HtmlKeys.HeadingId))">@(await heading.GetContentStringAsync())</a></p>
+                                                    <p class="small"><a href="#@(heading.GetString(Keys.HeadingId))">@(await heading.GetContentStringAsync())</a></p>
                                                 }
                                             </div>
                                         }
-                                    }
-                                    @if (Document.ContainsKey("EditLink"))
-                                    {
-                                        <p class="small font-weight-bold"><a href="@Document.GetString("EditLink")"><i class="fad fa-pencil"></i> Edit This Page</a></p>
+
+                                        string editLink = Document.ContainsKey(SiteKeys.EditLink)
+                                            ? Document.GetString(SiteKeys.EditLink)
+                                            : (Document.ContainsKey(SiteKeys.EditRoot)
+                                                ? Document.GetString(SiteKeys.EditRoot) + "/" + Document.Source.GetRelativeInputPath()
+                                                : null);
+                                        if (editLink != null)
+                                        {
+                                            <p class="small font-weight-bold"><a href="@editLink" data-no-validate><i class="fad fa-pencil"></i> Edit This Page</a></p>
+                                        }
                                     }
                                 </div>
                             </div>
@@ -303,7 +274,7 @@
         <script>
             $(document).ready(function() {
                 quicklink.listen();
-                
+
                 mermaid.initialize(
                 {
                     flowchart:
@@ -312,7 +283,7 @@
                     },
 					startOnLoad: false,
 					cloneCssStyles: false
-                });     
+                });
                 mermaid.init(undefined, ".mermaid");
 
                 // Remove the max-width setting that Mermaid sets
@@ -331,13 +302,13 @@
 						center: true,
                         maxZoom: 20,
                         zoomScaleSensitivity: 0.6
-					});			                          
+					});
 
                     // Do the reset once right away to fit the diagram
                     panZoom.resize();
                     panZoom.fit();
                     panZoom.center();
-                    
+
                     $(window).resize(function(){
                         panZoom.resize();
                         panZoom.fit();
@@ -346,7 +317,7 @@
 				}
             });
         </script>
-        
-		@RenderSection(SectionNames.Scripts, false)
+
+    @await RenderSectionAsync(SectionNames.Scripts, false)
     </body>
 </html>

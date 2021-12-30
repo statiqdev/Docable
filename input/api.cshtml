@@ -2,8 +2,9 @@ ArchivePipelines: Api
 ArchiveFilter: => GetString("Kind") == "Namespace"
 ArchiveOrderKey: DisplayName
 DestinationPath: => GetPath("ApiPath").Combine("index.html")
+NoSidebar: true
 ---
 @foreach (IDocument document in Model.GetChildren())
 {
-    <p>@Context.GetTypeLink(document)</p>
+    <p>@Context.GetTypeLink(document) (Display name: @document.GetString(CodeAnalysisKeys.DisplayName))</p>
 }

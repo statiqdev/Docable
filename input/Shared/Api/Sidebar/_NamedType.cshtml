@@ -1,0 +1,35 @@
+@{
+	IDocument containingAssembly = Document.GetDocument(CodeAnalysisKeys.ContainingAssembly);
+	IDocument containingNamespace = Document.GetDocument(CodeAnalysisKeys.ContainingNamespace);
+	if (containingAssembly != null || containingNamespace != null)
+	{
+		<div class="sidebar-root bg-white mb-3 page-box">
+			@if (containingAssembly != null)
+			{
+				<div class="sidebar-nav-item sidebar-header">Assembly</div>
+				<div class="sidebar-nav-item">@Context.GetTypeLink(containingAssembly, false)</div>
+			}
+			@if (containingNamespace != null)
+			{
+				<div class="sidebar-nav-item sidebar-header">Namespace</div>
+				<div class="sidebar-nav-item">@Context.GetTypeLink(containingNamespace, false)</div>
+			}
+		</div>
+	}
+
+	if (containingNamespace != null)
+	{
+		foreach(IGrouping<string, IDocument> typeGroup
+			in containingNamespace.GetDocumentList(CodeAnalysisKeys.MemberTypes)
+				.Where(x => x.GetBool(CodeAnalysisKeys.IsResult) && x.GetString(CodeAnalysisKeys.Kind).Equals("NamedType"))
+				.GroupBy(x => x.GetString(CodeAnalysisKeys.SpecificKind)))
+		{
+			<div class="sidebar-nav-item sidebar-header">@typeGroup.Key Types</div>
+			foreach(IDocument type in typeGroup.OrderBy(x => x.GetString(CodeAnalysisKeys.Name)))
+			{
+				string activeClass = type.GetString(CodeAnalysisKeys.SymbolId) == Document.GetString(CodeAnalysisKeys.SymbolId) ? "active" : null;
+				<div class="sidebar-nav-item @activeClass">@Context.GetTypeLink(type, false)</div>
+			}
+		}
+	}
+}

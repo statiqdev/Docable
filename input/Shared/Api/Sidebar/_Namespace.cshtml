@@ -1,0 +1,43 @@
+<div class="sidebar-nav-item sidebar-header">Namespaces</div>
+@{
+	IList<Tuple<string, IDocument>> namespaces
+		= Outputs.FromPipeline(nameof(Statiq.Docs.Pipelines.Api))
+			.Where(x => x.GetString(CodeAnalysisKeys.Kind) == "Namespace")
+			.Select(x => Tuple.Create(x.GetString(CodeAnalysisKeys.DisplayName), x))
+			.OrderBy(x => x.Item1)
+			.ToList();
+	Stack<string> nestingStack = new Stack<string>();
+	for(int c = 0 ; c < namespaces.Count ; c++)
+	{
+		Tuple<string, IDocument> current = namespaces[c];
+		string next = c < namespaces.Count - 1 ? namespaces[c + 1].Item1 : null;
+
+		// End nesting
+		while(nestingStack.Count > 0 && !current.Item1.StartsWith(nestingStack.Peek() + "."))
+		{
+			@Html.Raw("</div>");
+			nestingStack.Pop();
+		}
+
+		// Start nesting
+		string activeClass = Document.GetString(CodeAnalysisKeys.Kind) == "Namespace"
+			&& Document.GetString(CodeAnalysisKeys.DisplayName) == current.Item1
+			? "active"
+			: null;
+		if(next != null && next.StartsWith(current.Item1 + "."))
+		{
+			<div class="sidebar-nav-item has-children @activeClass">@Context.GetTypeLink(current.Item2, false)</div>
+			@Html.Raw($@"<div class=""sidebar-nav-children"">");
+			nestingStack.Push(current.Item1);
+		}
+		else
+		{
+			<div class="sidebar-nav-item @activeClass">@Context.GetTypeLink(current.Item2, false)</div>
+		}
+	}
+	while(nestingStack.Count > 0)
+	{
+		@Html.Raw("</div>");
+		nestingStack.Pop();
+	}
+}
