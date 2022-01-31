@@ -1,0 +1,8 @@
+@{
+	string examples = Document.GetString(CodeAnalysisKeys.Example);
+	if (!examples.IsNullOrWhiteSpace())
+	{
+		<h1 id="Examples">Examples</h1>
+		<div>@Html.Raw(examples)</div>
+	}
+}

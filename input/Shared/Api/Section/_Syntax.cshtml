@@ -1,0 +1,10 @@
+@{
+	string syntax = Document.GetString(CodeAnalysisKeys.Syntax);
+	if (!syntax.IsNullOrWhiteSpace())
+	{
+		<h1 id="Syntax">Syntax</h1>
+
+		// This is too intensive to do at generation-time with the JS library
+		<pre class="language-csharp"><code class="language-csharp">@syntax</code></pre>
+	}
+}

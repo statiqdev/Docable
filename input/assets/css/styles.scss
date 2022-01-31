@@ -111,7 +111,6 @@ h1 {
     color: $primary;
     padding-bottom: $spacer * 0.15;
     margin-bottom: $spacer * 0.5;
-    border-bottom: 4px solid $border-color;
 }
 
 h2, h3 {
@@ -151,6 +150,17 @@ code, code[class*="language-"], pre[class*="language-"] {
     text-shadow: none;
     font-family: $font-family-monospace;
     font-size: $font-size-sm;
+}
+
+// Remove the border from headings of striped tables and make the unstriped rows a little bit darker
+.table-striped {
+    & thead th {
+        border: none;
+        background: $gray-200 linear-gradient(0deg, $gray-200, $gray-100) repeat-x !important;
+    }
+    & tbody tr:nth-of-type(even) {
+        background-color: rgba(0, 0, 0, 0.02);
+    }
 }
 
 @mixin nav-project($color) {

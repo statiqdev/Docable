@@ -4,12 +4,12 @@
 	if (containingAssembly != null || containingNamespace != null)
 	{
 		<div class="sidebar-root bg-white mb-3 page-box">
-			@if (containingAssembly != null)
+			@if (containingAssembly is object)
 			{
 				<div class="sidebar-nav-item sidebar-header">Assembly</div>
 				<div class="sidebar-nav-item">@Context.GetTypeLink(containingAssembly, false)</div>
 			}
-			@if (containingNamespace != null)
+			@if (containingNamespace is object)
 			{
 				<div class="sidebar-nav-item sidebar-header">Namespace</div>
 				<div class="sidebar-nav-item">@Context.GetTypeLink(containingNamespace, false)</div>
@@ -22,7 +22,8 @@
 		foreach(IGrouping<string, IDocument> typeGroup
 			in containingNamespace.GetDocumentList(CodeAnalysisKeys.MemberTypes)
 				.Where(x => x.GetBool(CodeAnalysisKeys.IsResult) && x.GetString(CodeAnalysisKeys.Kind).Equals("NamedType"))
-				.GroupBy(x => x.GetString(CodeAnalysisKeys.SpecificKind)))
+				.GroupBy(x => x.GetString(CodeAnalysisKeys.SpecificKind))
+				.OrderBy(x => x.Key))
 		{
 			<div class="sidebar-nav-item sidebar-header">@typeGroup.Key Types</div>
 			foreach(IDocument type in typeGroup.OrderBy(x => x.GetString(CodeAnalysisKeys.Name)))

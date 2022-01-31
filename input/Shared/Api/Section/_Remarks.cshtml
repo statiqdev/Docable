@@ -1,0 +1,8 @@
+@{
+	string remarks = Document.GetString(CodeAnalysisKeys.Remarks);
+	if (!remarks.IsNullOrWhiteSpace())
+	{
+		<h1 id="Remarks">Remarks</h1>
+		<div>@Html.Raw(remarks)</div>
+	}
+}
