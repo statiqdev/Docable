@@ -108,13 +108,17 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .h-section {
 }
 
 h1 {
-    color: $primary;
+    font-weight: bold;
+    color: darken($primary, 10%);
+    background: -webkit-linear-gradient(darken($secondary, 10%), darken($primary, 10%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     padding-bottom: $spacer * 0.15;
     margin-bottom: $spacer * 0.5;
 }
 
 h2, h3 {
-    color: lighten($primary, 20%);
+    color: lighten($primary, 10%);
 }
 
 .border-muted {
@@ -152,28 +156,22 @@ code, code[class*="language-"], pre[class*="language-"] {
     font-size: $font-size-sm;
 }
 
-// Remove the border from headings of striped tables and make the unstriped rows a little bit darker
-.table-striped {
-    & thead th {
-        border: none;
-        background: $gray-200 linear-gradient(0deg, $gray-200, $gray-100) repeat-x !important;
-    }
-    & tbody tr:nth-of-type(even) {
-        background-color: rgba(0, 0, 0, 0.02);
-    }
-}
-
-@mixin nav-project($color) {
-    a {
-        &, &:focus, &:active {
-            color: $color;
+// Remove the border from headings of API tables and make the unstriped rows a little bit darker
+.table-api {
+    & thead {
+        & th {
+            border: none;
+            background: $gray-200 linear-gradient(0deg, $gray-200, $gray-100) repeat-x !important;
+            font-size: $font-size-sm;
         }
-
-        &:hover {
-            color: darken($color, 20%);
+    }
+    & tbody {
+        & tr:nth-of-type(even) {
+            background-color: rgba(0, 0, 0, 0.02);
         }
-
-        font-size: $font-size-lg;
+        & tr td:not(:first-child) {
+            font-size: $font-size-sm;
+        }
     }
 }
 
@@ -181,20 +179,8 @@ code, code[class*="language-"], pre[class*="language-"] {
     background-color: $body-bg;
 }
 
-#nav-framework {
-    @include nav-project($purple);
-}
-
-#nav-web {
-    @include nav-project($blue);
-}
-
-#nav-docs {
-    @include nav-project($orange);
-}
-
 #hero {
-    background: $blue linear-gradient(180deg, $blue, $purple) repeat-x !important;
+    background: $primary linear-gradient(180deg, $primary, $secondary) repeat-x !important;
 }
 
 .product-wordmark {
@@ -226,207 +212,156 @@ code, code[class*="language-"], pre[class*="language-"] {
     background-color: $gray-900;
 }
 
-$sections: () !default;
-$sections: map-merge(
-    (
-        "undefined": $gray-600,
-        "web": $blue,
-        "docs": $orange,
-        "framework": $purple,
-        "news": $gray-600
-    ),
-    $sections
-);
+#titlebar {
+    background: $primary linear-gradient(180deg, darken($secondary, 10%), darken($primary, 10%)) repeat-x !important;
 
-@each $section, $color in $sections {
-    .bg-#{$section} {
-        background-color: darken($color, 10%);
+    .breadcrumbs {
+        color: $secondary;
+        font-size: $h6-font-size;
+        display: block;
+        visibility: visible;
+
+        span::after {
+            color: darken($secondary, 10%);
+            content: "/";
+            font-weight: $font-weight-bold;
+            margin-left: $spacer * 0.5;
+            margin-right: $spacer * 0.5;
+            font-size: $font-size-lg;
+        }
+
+        span:last-child:after {
+            content: '';
+        }
+
+        & a {
+            &, &:focus, &:active, &:hover {
+                color: $secondary;
+            }
+
+            &:hover {
+                color: darken($secondary, 5%);
+            }
+        }
     }
 
-    .text-#{$section} {
-        color: $color;
-    }
+    .title {
+        line-height: 1.5em;
+        font-family: $font-family-serif;
+        font-size: $h1-font-size * 1.2;
 
-    .icon-#{$section} {
-        --fa-primary-color: #{$color};
-        --fa-secondary-color: #{lighten($color, 20%)};
-    }
-
-    .section-#{$section} {
-        #titlebar {
-            background: darken($color, 20%) linear-gradient(180deg, darken($color, 20%), darken($color, 10%)) repeat-x !important;
-
-            @if $section == 'undefined' {
-                .breadcrumbs {
-                    display: none;
-                    visibility: hidden;
-                }
-            } @else {
-                .breadcrumbs {
-                    color: darken($color, 12%);
-                    font-size: $h6-font-size;
-                    display: block;
-                    visibility: visible;
-
-                    span::after {
-                        content: "/";
-                        font-weight: $font-weight-bold;
-                        margin-left: $spacer * 0.5;
-                        margin-right: $spacer * 0.5;
-                        font-size: $font-size-lg;
-                    }
-
-                    span:last-child:after {
-                        content: '';
-                    }
-
-                    & a {
-                        &, &:focus, &:active {
-                            color: darken($color, 5%);
-                        }
-
-                        &:hover {
-                            color: $color;
-                        }
-                    }
-                }
-            }
-
-            .title {
-                line-height: 1.5em;
-                font-family: $font-family-serif;
-                font-size: $h1-font-size * 1.2;
-
-                small {
-                    font-size: $small-font-size * 0.8;
-                    color: lighten($color, 30%);
-                }
-            }
-        }
-
-        #undertitle {
-            background-color: darken($color, 10%);
-
-            @include media-breakpoint-up(md) {
-                & > div {
-                    min-height: $spacer * 1.5;
-
-                    & > .row {
-                        min-height: $spacer * 1.5;
-                    }
-                }
-            }
-        }
-
-        .bg-section {
-            background-color: darken($color, 10%);
-        }
-
-        .sidebar {
-            @include media-breakpoint-up(md) {
-                padding-bottom: $spacer * 1.5;
-                margin-bottom: $spacer * 1.5;
-                border-bottom: none;
-                padding-bottom: 0;
-                margin-bottom: 0;
-                overflow-y: scroll;
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                opacity: 0.6;
-                transition: opacity 0.5s;
-                display: block !important;
-
-                &:hover {
-                    opacity: 1;
-                }
-            }
-
-            padding-top: $spacer;
-        }
-
-        // sidebar-root elements can be nested to show root-level styling inside a sidebar
-        .sidebar-root {
-            // Root-level items
-            & > .sidebar-nav-item {
-                margin-bottom: $spacer;
-                font-weight: $font-weight-bold;
-
-                &.sidebar-header {
-                    margin-bottom: $spacer * 0.25;
-                    color: $gray-500;
-                    text-transform: uppercase;
-                }
-
-                &.has-children {
-                    border-bottom: 1px solid $gray-300;
-                    margin-bottom: 0;
-                }
-            }
-
-            & > .sidebar-nav-children {
-                margin-bottom: $spacer;
-                font-size: $font-size-sm;
-
-                & > .sidebar-nav-children {
-                    font-size: $font-size-sm * 0.875;
-                    padding-left: $spacer * 0.5;
-                }
-            }
-
-            // All items
-            & .sidebar-nav-item {
-                padding-left: $spacer * 0.5;
-                padding-right: $spacer * 0.5;
-                padding-bottom: $spacer * 0.25;
-                padding-top: $spacer * 0.25;
-                margin-bottom: $spacer * 0.25;
-                color: $gray-600;
-
-                &.has-children {
-                    margin-bottom: 0;
-                }
-
-                &.active {
-                    font-weight: $font-weight-bold;
-                    color: $color;
-                    background-color: lighten($color, 30%);
-
-                    & a {
-                        &, &:focus, &:active {
-                            color: $color;
-                        }
-
-                        &:hover {
-                            color: darken($color, 30%);
-                        }
-                    }
-                }
-
-                & a {
-                    &, &:focus, &:active {
-                        color: $gray-600;
-                    }
-
-                    &:hover {
-                        color: darken($color, 30%);
-                    }
-                }
-            }
+        small {
+            font-size: $small-font-size * 0.8;
+            color: lighten($primary, 30%);
         }
     }
 }
 
+#undertitle {
+    background-color: darken($primary, 10%);
+
+    @include media-breakpoint-up(md) {
+        & > div {
+            min-height: $spacer * 1.5;
+
+            & > .row {
+                min-height: $spacer * 1.5;
+            }
+        }
+    }
+}
 .sidebar {
     @include media-breakpoint-up(md) {
-        & {
-            padding-bottom: $spacer * 1.5;
-            margin-bottom: $spacer * 1.5;
-            border-bottom: none;
-            padding-bottom: 0;
+        padding-bottom: $spacer * 1.5;
+        margin-bottom: $spacer * 1.5;
+        border-bottom: none;
+        padding-bottom: 0;
+        margin-bottom: 0;
+        overflow-y: auto;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        opacity: 0.6;
+        transition: opacity 0.5s;
+        display: block !important;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+    padding-top: $spacer;
+}
+
+// sidebar-root elements can be nested to show root-level styling inside a sidebar
+.sidebar-root {
+    // Root-level items
+    & > .sidebar-nav-item {
+        margin-bottom: $spacer;
+        font-weight: $font-weight-bold;
+
+        &.sidebar-header {
+            margin-bottom: $spacer * 0.25;
+            color: $gray-700;
+            font-size: $font-size-sm;
+            text-transform: uppercase;
+        }
+
+        &.has-children {
+            border-bottom: 1px solid $gray-300;
             margin-bottom: 0;
+        }
+    }
+
+    & > .sidebar-nav-children {
+        margin-bottom: $spacer;
+        font-size: $font-size-sm;
+
+        & > .sidebar-nav-children {
+            font-size: $font-size-sm * 0.875;
+            padding-left: $spacer * 0.5;
+        }
+    }
+
+    // All items
+    & .sidebar-nav-item {
+        padding-left: $spacer * 0.5;
+        padding-right: $spacer * 0.5;
+        padding-bottom: $spacer * 0.25;
+        padding-top: $spacer * 0.25;
+        margin-bottom: $spacer * 0.25;
+        color: $gray-600;
+
+        &.has-children {
+            margin-bottom: 0;
+        }
+
+        &.active {
+            font-weight: $font-weight-bold;
+            color: $white;
+            background-color: darken($primary, 15%);
+
+            & a {
+                &, &:focus, &:active {
+                    color: $white;
+                }
+
+                &:hover {
+                    color: $white;
+                }
+            }
+        }
+
+        & a {
+            &, &:focus, &:active {
+                color: $gray-600;
+            }
+
+            &:hover {
+                color: darken($primary, 30%);
+            }
         }
     }
 }

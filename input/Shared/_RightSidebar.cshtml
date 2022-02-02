@@ -1,0 +1,22 @@
+@{
+    IReadOnlyList<IDocument> headings = Document.GetDocumentList(Keys.Headings);
+    string editLink = Document.ContainsKey(SiteKeys.EditLink)
+        ? Document.GetString(SiteKeys.EditLink)
+        : (Document.ContainsKey(SiteKeys.EditRoot)
+            ? Document.GetString(SiteKeys.EditRoot) + "/" + Document.Source.GetRelativeInputPath()
+            : null);
+    if (headings.Count > 0)
+    {
+        <div class="@(editLink != null ? "border-bottom" : string.Empty) mb-3">
+            <p class="small font-weight-bold">On This Page</p>
+            @foreach (IDocument heading in headings)
+            {
+                <p class="small"><a href="#@(heading.GetString(Keys.HeadingId))">@(await heading.GetContentStringAsync())</a></p>
+            }
+        </div>
+    }
+    if (editLink != null)
+    {
+        <p class="small font-weight-bold"><a href="@editLink" data-no-validate><i class="fad fa-pencil"></i> Edit This Page</a></p>
+    }
+}

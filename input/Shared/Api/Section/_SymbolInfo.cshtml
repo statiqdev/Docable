@@ -8,6 +8,7 @@
     IReadOnlyList<IDocument> baseTypes = Document.GetDocumentList(CodeAnalysisKeys.BaseTypes);
     IReadOnlyList<IDocument> derivedTypes = Document.GetDocumentList(CodeAnalysisKeys.DerivedTypes);
     IReadOnlyList<IDocument> implementingTypes = Document.GetDocumentList(CodeAnalysisKeys.ImplementingTypes);
+	IReadOnlyList<IDocument> implements = Document.GetDocumentList(CodeAnalysisKeys.Implements);
     if (containingAssembly is object
         || containingNamespace is object
         || allInterfaces?.Count > 0
@@ -32,12 +33,6 @@
 			{
 				<dt>Containing Type</dt>
 				<dd>@Context.GetTypeLink(containingType)</dd>
-			}
-
-			@if(type != null)
-			{
-				<dt>Event Type</dt>
-				<dd>@Context.GetTypeLink(type)</dd>
 			}
 
 			@if(overridden != null)
@@ -85,6 +80,20 @@
     		    </dd>
 	        }
 
+	        @if (implements?.Count > 0)
+	        {
+    		    <dt>Implements</dt>
+    		    <dd>
+    			    <ul class="list-unstyled">
+    				    @foreach (IDocument implementsDocument in implements)
+				        {
+					        IDocument implementsContainingTypeDocument = implementsDocument.GetDocument(CodeAnalysisKeys.ContainingType);
+    					    <li>@Context.GetTypeLink(implementsContainingTypeDocument).@Context.GetTypeLink(implementsDocument)</li>
+    				    }
+    			    </ul>
+    		    </dd>
+	        }
+
 	        @if (implementingTypes?.Count > 0)
 	        {
     		    <dt>Implementing Types</dt>
@@ -97,6 +106,12 @@
     			    </ul>
     		    </dd>
 	        }
+
+			@if(type != null)
+			{
+				<dt>@Document.GetString(CodeAnalysisKeys.Kind) Type</dt>
+				<dd>@Context.GetTypeLink(type)</dd>
+			}
 	    </dl>
     }
 }

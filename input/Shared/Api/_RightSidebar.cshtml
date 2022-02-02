@@ -1,0 +1,11 @@
+@{
+    List<(string, string)> headings = (List<(string, string)>)ViewData[Keys.Headings];
+    if (headings?.Count > 0)
+    {
+        <p class="small font-weight-bold">On This Page</p>
+        @foreach ((string, string) heading in headings)
+        {
+            <p class="small"><a href="#@heading.Item1">@heading.Item2</a></p>
+        }
+    }
+}

@@ -50,27 +50,25 @@
                                 </button>
                                 <div id="collapse-topnav" class="collapse navbar-collapse flex-wrap">
                                     <ul class="navbar-nav mr-auto">
-                                        <li id="nav-web" class="nav-item">
-                                            <a class="nav-link text-blue font-weight-light font-size-lg" href="/web">Web</a>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-primary font-weight-light font-size-lg" href="/web">Web</a>
                                         </li>
                                         <li class="nav-item mx-3 border-right d-none d-md-block"></li>
-                                        <li id="nav-docs" class="nav-item">
-                                            <a class="nav-link text-orange font-weight-light font-size-lg" href="/docs">Docs</a>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-primary font-weight-light font-size-lg" href="/docs">Docs</a>
                                         </li>
                                         <li class="nav-item mx-3 border-right d-none d-md-block"></li>
-                                        <li id="nav-framework" class="nav-item">
-                                            <a class="nav-link text-purple font-weight-light font-size-lg" href="/framework">Framework</a>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-primary font-weight-light font-size-lg" href="/framework">Framework</a>
                                         </li>
                                     </ul>
                                     <ul class="navbar-nav">
                                         <li class="nav-item">
                                             <a class="nav-link" href="/news">News</a>
                                         </li>
-                                        @*
                                         <li class="nav-item">
                                             <a class="nav-link" href="/api">API</a>
                                         </li>
-                                        *@
                                         <li class="nav-item">
                                             <a class="nav-link" href="https://github.com/statiqdev"><i class="fab fa-github"></i> GitHub</a>
                                         </li>
@@ -98,75 +96,84 @@
                 string section = Document.Destination.Segments.Length > 1 ? Document.Destination.Segments[0].ToString() : null;
                 IDocument root = OutputPages.Get(section + "/index.html");
             }
-            <div class="flex-grow-1 d-flex flex-column @(section != null ? "section-undefined section-" + section : null)">
-                @if(section != null)
-                {
-                    <div id="titlebar" class="py-4">
-                        <div class="container-xl">
-                            <div class="row">
-                                @{
-                                    string titleBarClasses = Document.GetBool(SiteKeys.NoSidebar) ? string.Empty : "offset-md-3 offset-lg-2";
-                                }
-                                <div class="@titleBarClasses offset-lg-2 col-12 col-lg-8 px-3 px-lg-0 w-100 d-flex align-items-end">
-                                    <div class="flex-grow-1">
-                                        <div class="breadcrumbs text-uppercase d-flex flex-column flex-md-row">
+            <div class="flex-grow-1 d-flex flex-column">
+                <!-- Titlebar -->
+                <div id="titlebar" class="py-4">
+                    <div class="container-xl">
+                        <div class="row">
+                            @{
+                                string titleBarClasses = Document.GetBool(SiteKeys.NoSidebar) ? string.Empty : "offset-md-3 offset-lg-2";
+                            }
+                            <div class="@titleBarClasses offset-lg-2 col-12 col-lg-8 px-3 px-lg-0 w-100 d-flex align-items-end">
+                                <div class="flex-grow-1">
+                                    <div class="breadcrumbs d-flex flex-column flex-md-row">
+                                        @if (IsSectionDefined(SectionNames.Breadcrumbs))
+                                        {
+                                            @await RenderSectionAsync(SectionNames.Breadcrumbs, false)
+                                        }
+                                        else
+                                        {
                                             @foreach (IDocument parent in OutputPages.GetAncestorsOf(Document, Document.IdEquals(root)).Reverse().Skip(1))
                                             {
                                                 <span>@Html.DocumentLink(parent, parent.GetString(SiteKeys.BreadcrumbTitle, parent.GetTitle()))</span>
                                             }
-                                        </div>
-                                        <div class="text-white m-0 title">
-                                            @if (IsSectionDefined(SectionNames.Title))
-                                            {
-                                                @await RenderSectionAsync(SectionNames.Title, false)
-                                            }
-                                            else
-                                            {
-                                                @(Document.GetString(Keys.Title) ?? Document.GetTitle())
-                                                @if (Document.GetInt(Keys.Index) > 1)
-                                                {
-                                                    <small>(Page @Document.GetString(Keys.Index))</small>
-                                                }
-                                            }
-                                        </div>
-                                        @if (IsSectionDefined(SectionNames.Subtitle))
-                                        {
-                                            @await RenderSectionAsync(SectionNames.Subtitle, false)
                                         }
                                     </div>
-                                    @if (!Document.GetBool(SiteKeys.NoSidebar))
+                                    <div class="text-white m-0 title">
+                                        @if (IsSectionDefined(SectionNames.Title))
+                                        {
+                                            @await RenderSectionAsync(SectionNames.Title, false)
+                                        }
+                                        else
+                                        {
+                                            @(Document.GetString(Keys.Title) ?? Document.GetTitle())
+                                            @if (Document.GetInt(Keys.Index) > 1)
+                                            {
+                                                <small>(Page @Document.GetString(Keys.Index))</small>
+                                            }
+                                        }
+                                    </div>
+                                    @if (IsSectionDefined(SectionNames.Subtitle))
                                     {
-                                        <div class="navbar navbar-expand-md navbar-dark p-0">
-                                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapse-sidebar" aria-controls="collapse-sidebar" aria-expanded="false" aria-label="Toggle navigation">
-                                                <span class="navbar-toggler-icon"></span>
-                                            </button>
-                                        </div>
+                                        @await RenderSectionAsync(SectionNames.Subtitle, false)
                                     }
                                 </div>
+                                @if (!Document.GetBool(SiteKeys.NoSidebar))
+                                {
+                                    <div class="navbar navbar-expand-md navbar-dark p-0">
+                                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#left-sidebar" aria-controls="left-sidebar" aria-expanded="false" aria-label="Toggle navigation">
+                                            <span class="navbar-toggler-icon"></span>
+                                        </button>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>
-                    <div id="undertitle">
-                        <div class="container-xl">
-                            <div class="row">
-                                @if (Document.GetBool(SiteKeys.NoSidebar))
-                                {
-                                    <div class="offset-lg-2 col-12 col-lg-8 bg-white">
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="col-md-3 col-lg-2 bg-section">
-                                    </div>
-                                    <div class="col-md-9 col-lg-8 bg-white">
-                                    </div>
-                                }
-                                <div class="col-lg-2 d-none d-lg-block bg-section">
+                </div>
+
+                <!-- Under title -->
+                <div id="undertitle">
+                    <div class="container-xl">
+                        <div class="row">
+                            @if (Document.GetBool(SiteKeys.NoSidebar))
+                            {
+                                <div class="offset-lg-2 col-12 col-lg-8 bg-white">
                                 </div>
+                            }
+                            else
+                            {
+                                <div class="col-md-3 col-lg-2">
+                                </div>
+                                <div class="col-md-9 col-lg-8 bg-white">
+                                </div>
+                            }
+                            <div class="col-lg-2 d-none d-lg-block">
                             </div>
                         </div>
                     </div>
-                }
+                </div>
+
+                <!-- Body -->
                 <div class="flex-grow-1 d-flex flex-column">
                     @if (Document.GetBool(SiteKeys.NoContainer))
                     {
@@ -193,7 +200,7 @@
                                     else
                                     {
                                         <div class="col-md-3 col-lg-2 bg-body">
-                                            <div id="collapse-sidebar" class="sidebar sidebar-root collapse px-0 px-md-3 pt-3">
+                                            <div id="left-sidebar" class="sidebar sidebar-root collapse px-0 px-md-3 pt-3">
                                                 @if (IsSectionDefined(SectionNames.Sidebar))
                                                 {
                                                     @await RenderSectionAsync(SectionNames.Sidebar, false)
@@ -218,30 +225,17 @@
                                         </div>
                                     }
                                 }
-                                <div class="col-lg-2 d-none d-lg-block bg-body pl-3 pt-3">
-                                    @{
-                                        IReadOnlyList<IDocument> headings = Document.GetDocumentList(Keys.Headings);
-                                        if (headings.Count > 0)
+                                <div class="col-lg-2 bg-body">
+                                    <div id="right-sidebar" class="sidebar pl-3 pt-3">
+                                        @if (IsSectionDefined(SectionNames.RightSidebar))
                                         {
-                                            <div class="border-bottom mb-3">
-                                                <p class="small font-weight-bold">On This Page</p>
-                                                @foreach (IDocument heading in headings)
-                                                {
-                                                    <p class="small"><a href="#@(heading.GetString(Keys.HeadingId))">@(await heading.GetContentStringAsync())</a></p>
-                                                }
-                                            </div>
+                                            @await RenderSectionAsync(SectionNames.RightSidebar, false)
                                         }
-
-                                        string editLink = Document.ContainsKey(SiteKeys.EditLink)
-                                            ? Document.GetString(SiteKeys.EditLink)
-                                            : (Document.ContainsKey(SiteKeys.EditRoot)
-                                                ? Document.GetString(SiteKeys.EditRoot) + "/" + Document.Source.GetRelativeInputPath()
-                                                : null);
-                                        if (editLink != null)
+                                        else
                                         {
-                                            <p class="small font-weight-bold"><a href="@editLink" data-no-validate><i class="fad fa-pencil"></i> Edit This Page</a></p>
+                                            await Html.RenderPartialAsync("_RightSidebar");
                                         }
-                                    }
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -249,6 +243,8 @@
                 </div>
             </div>
         </div>
+
+        <!-- Footer -->
         <div id="footer" class="p-3 text-white">
             <div class="container-xl">
                 <div class="row">
@@ -271,10 +267,48 @@
                 </div>
             </div>
         </div>
+
+        <!-- Scripts -->
         <script>
             $(document).ready(function() {
                 quicklink.listen();
 
+				// Keeps the sidebar in view on wider viewports
+                let stickySidebar = function(id)
+				{
+                    let sidebar = $(id)[0];
+					if (window.innerWidth >= 768) {
+						let sidebarParent = $(id).parent()[0];
+						let sidebarParentRect = sidebarParent.getBoundingClientRect();
+						if (sidebarParentRect.bottom > window.innerHeight) {
+							sidebar.style.bottom = sidebarParentRect.bottom - window.innerHeight + "px";
+						} else {
+							sidebar.style.bottom = 0;
+						}
+						if (sidebarParentRect.top < 0) {
+							sidebar.style.top = -sidebarParentRect.top + "px";
+						} else {
+							sidebar.style.top = 0;
+						}
+					} else {
+						sidebar.style.top = 0;
+						sidebar.style.bottom = 0;
+					}
+				};
+				$(window).on("load", function() {
+					stickySidebar('#left-sidebar');
+					stickySidebar('#right-sidebar');
+				});
+                $(window).scroll(function() {
+					stickySidebar('#left-sidebar');
+					stickySidebar('#right-sidebar');
+				});
+				$(window).resize(function() {
+                    stickySidebar('#left-sidebar');
+					stickySidebar('#right-sidebar');
+				})
+
+                // Mermaid diagrams
                 mermaid.initialize(
                 {
                     flowchart:
@@ -318,6 +352,6 @@
             });
         </script>
 
-    @await RenderSectionAsync(SectionNames.Scripts, false)
+        @await RenderSectionAsync(SectionNames.Scripts, false)
     </body>
 </html>

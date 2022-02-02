@@ -1,13 +1,13 @@
-@using Microsoft.AspNetCore.Html;
 @{
 	IReadOnlyList<IDocument> operators = Document.GetDocumentList(CodeAnalysisKeys.Operators)
 		.OrderBy(x => x.GetString(CodeAnalysisKeys.DisplayName))
 		.ToList();
 	if(operators?.Count > 0)
 	{
+		((List<(string, string)>)ViewData[Keys.Headings]).Add(("Operators", "Operators"));
 		<h1 id="Operators">Operators</h1>
 		<div class="box-body no-padding table-responsive">
-			<table class="table table-striped table-hover three-cols">
+			<table class="table table-api table-striped table-hover three-cols">
 				<thead>
 					<tr>
 						<th>Name</th>
@@ -18,10 +18,9 @@
 				<tbody>
 					@foreach(IDocument op in operators)
 					{
-						IDocument returnType = op.GetDocument(CodeAnalysisKeys.ReturnType);
 						<tr>
 							<td>@Context.GetTypeLink(op, false)</td>
-							<td>@(returnType == null ? new HtmlString(string.Empty) : Context.GetTypeLink(returnType))</td>
+							<td>@Context.GetTypeLink(op.GetDocument(CodeAnalysisKeys.ReturnType))</td>
 							<td>
 								<div>@Html.Raw(op.GetString(CodeAnalysisKeys.Summary))</div>
 								@{
