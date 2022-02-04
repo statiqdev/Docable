@@ -1,3 +1,5 @@
+@* The root page of this section is passed in as the model *@
+
 <div class="sidebar-nav-item @(Document.IdEquals(Model) ? "active" : null)">
     @Html.DocumentLink(Model)
 </div>

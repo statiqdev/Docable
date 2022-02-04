@@ -136,6 +136,21 @@ h2, h3 {
     background: $gray-200 linear-gradient(180deg, $gray-200, $white) repeat-x !important;
 }
 
+.navbar {
+    & .navbar-collapse {
+        align-items: stretch;
+    }
+
+    & .navbar-nav {
+        align-items: stretch;
+    }
+
+    & .nav-item {
+        display: flex;
+        align-items: center;
+    }
+}
+
 #logo {
     height: 2.5rem;
 }
@@ -270,6 +285,7 @@ code, code[class*="language-"], pre[class*="language-"] {
         }
     }
 }
+
 .sidebar {
     @include media-breakpoint-up(md) {
         padding-bottom: $spacer * 1.5;
@@ -293,6 +309,12 @@ code, code[class*="language-"], pre[class*="language-"] {
     }
 
     padding-top: $spacer;
+}
+
+#right-sidebar {
+    @include media-breakpoint-down(md) {
+        display: none !important;
+    }
 }
 
 // sidebar-root elements can be nested to show root-level styling inside a sidebar

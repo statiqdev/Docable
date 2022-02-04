@@ -5,7 +5,7 @@
         : (Document.ContainsKey(SiteKeys.EditRoot)
             ? Document.GetString(SiteKeys.EditRoot) + "/" + Document.Source.GetRelativeInputPath()
             : null);
-    if (headings.Count > 0)
+    if (headings?.Count > 0)
     {
         <div class="@(editLink != null ? "border-bottom" : string.Empty) mb-3">
             <p class="small font-weight-bold">On This Page</p>
