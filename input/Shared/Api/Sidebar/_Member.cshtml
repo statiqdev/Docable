@@ -4,21 +4,21 @@
     IDocument containingType = Document.GetDocument(CodeAnalysisKeys.ContainingType);
     if (containingAssembly is object || containingNamespace is object || containingType is object)
     {
-        <div class="sidebar-root bg-white mb-3 page-box">
+        <div class="sidebar-root bg-white mb-3 page-box font-size-sm">
             @if (containingAssembly is object)
             {
                 <div class="sidebar-nav-item sidebar-header mb-0 pb-0">Assembly</div>
-                <div class="sidebar-nav-item sidebar-nav-children font-weight-normal mt-0 pt-0">@Context.GetTypeLink(containingAssembly, false)</div>
+                <div class="sidebar-nav-item font-weight-normal mt-0 pt-0">@Context.GetTypeLink(containingAssembly, false)</div>
             }
             @if (containingNamespace is object)
             {
                 <div class="sidebar-nav-item sidebar-header mb-0 pb-0">Namespace</div>
-                <div class="sidebar-nav-item sidebar-nav-children font-weight-normal mt-0 pt-0">@Context.GetTypeLink(containingNamespace, false)</div>
+                <div class="sidebar-nav-item  font-weight-normal mt-0 pt-0">@Context.GetTypeLink(containingNamespace, false)</div>
             }
             @if (containingType is object)
             {
                 <div class="sidebar-nav-item sidebar-header mb-0 pb-0">Type</div>
-                <div class="sidebar-nav-item sidebar-nav-children font-weight-normal mt-0 pt-0">@Context.GetTypeLink(containingType, false)</div>
+                <div class="sidebar-nav-item font-weight-normal mt-0 pt-0">@Context.GetTypeLink(containingType, false)</div>
             }
         </div>
     }
@@ -32,13 +32,15 @@
         if(constructors is object && constructors.Count > 0)
         {
             <div class="sidebar-nav-item sidebar-header">Constructors</div>
-            foreach(IDocument constructor in constructors)
-            {
-                string activeClass = constructor.GetString(CodeAnalysisKeys.SymbolId) == Document.GetString(CodeAnalysisKeys.SymbolId)
-                    ? "active"
-                    : null;
-                <div class="sidebar-nav-item sidebar-nav-children font-weight-normal @activeClass">@Context.GetTypeLink(constructor, false)</div>
-            }
+            <div class="sidebar-nav-children">
+                @foreach(IDocument constructor in constructors)
+                {
+                    string activeClass = constructor.GetString(CodeAnalysisKeys.SymbolId) == Document.GetString(CodeAnalysisKeys.SymbolId)
+                        ? "active"
+                        : null;
+                    <div class="sidebar-nav-item font-weight-normal @activeClass">@Context.GetTypeLink(constructor, false)</div>
+                }
+            </div>
         }
 
         foreach(IGrouping<string, IDocument> memberGroup
@@ -48,14 +50,16 @@
                 .OrderBy(x => x.Key))
         {
             <div class="sidebar-nav-item sidebar-header">@memberGroup.Key Members</div>
-            foreach(IDocument member in memberGroup
-                .OrderBy(x => x.GetString(CodeAnalysisKeys.Name)))
-            {
-                string activeClass = member.GetString(CodeAnalysisKeys.SymbolId) == Document.GetString(CodeAnalysisKeys.SymbolId)
-                    ? "active"
-                    : null;
-                <div class="sidebar-nav-item sidebar-nav-children font-weight-normal @activeClass">@Context.GetTypeLink(member, false)</div>
-            }
+            <div class="sidebar-nav-children">
+                @foreach(IDocument member in memberGroup
+                    .OrderBy(x => x.GetString(CodeAnalysisKeys.Name)))
+                {
+                    string activeClass = member.GetString(CodeAnalysisKeys.SymbolId) == Document.GetString(CodeAnalysisKeys.SymbolId)
+                        ? "active"
+                        : null;
+                    <div class="sidebar-nav-item font-weight-normal @activeClass">@Context.GetTypeLink(member, false)</div>
+                }
+            </div>
         }
     }
 }

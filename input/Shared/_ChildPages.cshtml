@@ -1,17 +1,20 @@
-@if (!Document.GetBool(SiteKeys.NoChildPages) && OutputPages.GetChildrenOf(Document).Any())
-{
-    <h4 class="h-section mb-2">Child Pages</h4>
-    @foreach(IDocument child in OutputPages.GetChildrenOf(Document))
+@{
+    DocumentList<IDocument> children = OutputPages.GetChildrenOf(Document);
+    @if (!Document.GetBool(SiteKeys.NoChildPages) && children.Count > 0)
     {
-        string excerpt = child.GetString(Keys.Excerpt);
-        <div>
-            <div class="p-3 mb-2 bg-light page-box">
-                <h4>@Html.DocumentLink(child)</h4>
-                @if(!string.IsNullOrEmpty(excerpt))
-                {
-                    <div class="font-size-sm">@Html.Raw(excerpt)</div>
-                }
+        <h4 class="h-section mb-2">Child Pages</h4>
+        @foreach (IDocument child in children)
+        {
+            string excerpt = child.GetString(Keys.Excerpt);
+            <div>
+                <div class="p-3 mb-2 bg-light page-box">
+                    <h4>@Html.DocumentLink(child)</h4>
+                    @if (!string.IsNullOrEmpty(excerpt))
+                    {
+                        <div class="font-size-sm">@Html.Raw(excerpt)</div>
+                    }
+                </div>
             </div>
-        </div>
+        }
     }
 }

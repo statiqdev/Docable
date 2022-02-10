@@ -1,35 +1,44 @@
 @* The root page of this section is passed in as the model *@
 
-<div class="sidebar-nav-item @(Document.IdEquals(Model) ? "active" : null)">
-    @Html.DocumentLink(Model)
-</div>
-@foreach (IDocument document in OutputPages.GetChildrenOf(Model))
-{
-    <div class="sidebar-nav-item @(Document.IdEquals(document) ? "active" : null) @(OutputPages.GetChildrenOf(document).Any() ? "has-children" : null)">
-        @Html.DocumentLink(document)
-    </div>
-
-    @if (OutputPages.GetChildrenOf(document).Any())
+@{
+    // Show the root document of the section at the top of the sidebar
+    if (Model.GetBool(SiteKeys.ShowInSidebar, true))
     {
-        <div class="sidebar-nav-children">
-            @foreach (IDocument child in OutputPages.GetChildrenOf(document))
-            {
-                <div class="sidebar-nav-item @(Document.IdEquals(child) ? "active" : null) @(OutputPages.GetChildrenOf(child).Any() ? "has-children" : null)">
-                    @Html.DocumentLink(child)
-                </div>
+        @await Html.PartialAsync("_SidebarItem", Model)
+    }
 
-                @if (OutputPages.GetChildrenOf(child).Any())
+    // Now descend up to 2 levels
+    foreach (IDocument document in OutputPages.GetChildrenOf(Model))
+    {
+        if (document.GetBool(SiteKeys.ShowInSidebar, true))
+        {
+            @await Html.PartialAsync("_SidebarItem", document)
+        }
+
+        @if (OutputPages.GetChildrenOf(document).Any())
+        {
+            <div class="sidebar-nav-children">
+                @foreach (IDocument child in OutputPages.GetChildrenOf(document))
                 {
-                    <div class="sidebar-nav-children">
-                        @foreach (IDocument child2 in OutputPages.GetChildrenOf(child))
-                        {
-                            <div class="sidebar-nav-item @(Document.IdEquals(child2) ? "active" : null)">
-                                @Html.DocumentLink(child2)
-                            </div>
-                        }
-                    </div>
+                    if (child.GetBool(SiteKeys.ShowInSidebar, true))
+                    {
+                        @await Html.PartialAsync("_SidebarItem", child)
+                    }
+
+                    @if (OutputPages.GetChildrenOf(child).Any())
+                    {
+                        <div class="sidebar-nav-children">
+                            @foreach (IDocument child2 in OutputPages.GetChildrenOf(child))
+                            {
+                                if (child2.GetBool(SiteKeys.ShowInSidebar, true))
+                                {
+                                    @await Html.PartialAsync("_SidebarItem", child2)
+                                }
+                            }
+                        </div>
+                    }
                 }
-            }
-        </div>
+            </div>
+        }
     }
 }

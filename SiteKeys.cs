@@ -20,12 +20,17 @@
 	    public const string ShowInNavigation = nameof(ShowInNavigation);
 
 		/// <summary>
+		/// Set to <c>false</c> to hide the page in the sidebar navigation.
+		/// </summary>
+		public const string ShowInSidebar = nameof(ShowInSidebar);
+
+		/// <summary>
 		/// The title of a page when displayed in the navigation, otherwise the normal title will be used.
 		/// </summary>
 		public const string NavigationTitle = nameof(NavigationTitle);
 
 		/// <summary>
-		/// Set to <c>true</c> to hide the page container for a given page.
+		/// Set to <c>true</c> to hide the page container (margins, sidebars, etc.) for a given page.
 		/// </summary>
         public const string NoContainer = nameof(NoContainer);
 
@@ -33,6 +38,11 @@
 		/// Set to <c>true</c> to hide the sidebar for a given page.
 		/// </summary>
         public const string NoSidebar = nameof(NoSidebar);
+
+		/// <summary>
+		/// Set to <c>true</c> to hide the title area for a given page.
+		/// </summary>
+		public const string NoTitle = nameof(NoTitle);
 
 		/// <summary>
 		/// Set to <c>true</c> to hide the child pages section at the bottom of a given page.

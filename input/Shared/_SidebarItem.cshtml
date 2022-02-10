@@ -1,0 +1,6 @@
+@* Override in your own input directory to customize the appearance of items in the sidebar *@
+@* The document for the sidebar link is passed in as the model *@
+
+<div class="sidebar-nav-item @(Document.IdEquals(Model) ? "active" : null) @(OutputPages.GetChildrenOf(Model).Any() ? "has-children" : null)">
+    @Html.DocumentLink(Model)
+</div>

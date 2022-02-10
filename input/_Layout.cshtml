@@ -23,7 +23,8 @@
                 <link href="@Html.Raw(fontLink)" rel="stylesheet" data-no-mirror>
             }
         }
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.19.0/themes/prism.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.26.0/themes/prism.css">
+        <link href="/assets/css/theme.css" rel="stylesheet" />
         <link href="/assets/css/styles.css" rel="stylesheet" />
 
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
@@ -32,8 +33,8 @@
         <script src="https://kit.fontawesome.com/a1cad7ed9a.js" crossorigin="anonymous" data-no-mirror></script>
         <script src="https://cdn.jsdelivr.net/npm/mermaid@8.4.8/dist/mermaid.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/prismjs@1.19.0/components/prism-core.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/prismjs@1.19.0/plugins/autoloader/prism-autoloader.min.js" data-no-mirror></script>
+        <script src="https://cdn.jsdelivr.net/npm/prismjs@1.26.0/components/prism-core.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/prismjs@1.26.0/plugins/autoloader/prism-autoloader.min.js" data-no-mirror></script>
         <script src="https://cdn.jsdelivr.net/npm/quicklink@2.0.0/dist/quicklink.umd.js"></script>
 
         @await RenderSectionAsync(SectionNames.Head, false)
@@ -68,81 +69,82 @@
                 IDocument root = OutputPages.Get(section + "/index.html");
             }
             <div class="flex-grow-1 d-flex flex-column">
-                <!-- Titlebar -->
-                <div id="titlebar" class="py-4">
-                    <div class="container-xl">
-                        <div class="row">
-                            @{
-                                string titleBarClasses = Document.GetBool(SiteKeys.NoSidebar) ? string.Empty : "offset-md-3 offset-lg-2";
-                            }
-                            <div class="@titleBarClasses offset-lg-2 col-12 col-lg-8 px-3 px-lg-0 w-100 d-flex align-items-end">
-                                <div class="flex-grow-1">
-                                    <div class="breadcrumbs d-flex flex-column flex-md-row">
-                                        @if (IsSectionDefined(SectionNames.Breadcrumbs))
+                @if (!Document.GetBool(SiteKeys.NoTitle))
+                {
+                    <!-- Titlebar -->
+                    <div id="titlebar" class="py-4">
+                        <div class="container-xl">
+                            <div class="row">
+                                <div class="offset-lg-2 col-12 col-lg-8 px-3 px-lg-0 w-100 d-flex flex-wrap align-items-end">
+                                    <div class="flex-grow-1">
+                                        <div class="breadcrumbs d-flex flex-column flex-md-row text-break">
+                                            @if (IsSectionDefined(SectionNames.Breadcrumbs))
+                                            {
+                                                @await RenderSectionAsync(SectionNames.Breadcrumbs, false)
+                                            }
+                                            else
+                                            {
+                                                await Html.RenderPartialAsync("_Breadcrumbs", root);
+                                            }
+                                        </div>
+                                        <div class="text-white m-0 text-break title">
+                                            @if (IsSectionDefined(SectionNames.Title))
+                                            {
+                                                @await RenderSectionAsync(SectionNames.Title, false)
+                                            }
+                                            else
+                                            {
+                                                await Html.RenderPartialAsync("_Title", root);
+                                            }
+                                        </div>
+                                        @if (IsSectionDefined(SectionNames.Subtitle))
                                         {
-                                            @await RenderSectionAsync(SectionNames.Breadcrumbs, false)
-                                        }
-                                        else
-                                        {
-                                            await Html.RenderPartialAsync("_Breadcrumbs", root);
+                                            @await RenderSectionAsync(SectionNames.Subtitle, false)
                                         }
                                     </div>
-                                    <div class="text-white m-0 title">
-                                        @if (IsSectionDefined(SectionNames.Title))
-                                        {
-                                            @await RenderSectionAsync(SectionNames.Title, false)
-                                        }
-                                        else
-                                        {
-                                            await Html.RenderPartialAsync("_Title", root);
-                                        }
-                                    </div>
-                                    @if (IsSectionDefined(SectionNames.Subtitle))
+                                    @if (!Document.GetBool(SiteKeys.NoSidebar))
                                     {
-                                        @await RenderSectionAsync(SectionNames.Subtitle, false)
+                                        <div class="navbar navbar-expand-md navbar-dark p-0">
+                                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#left-sidebar" aria-controls="left-sidebar" aria-expanded="false" aria-label="Toggle navigation">
+                                                <span class="navbar-toggler-icon"></span>
+                                            </button>
+                                        </div>
                                     }
                                 </div>
-                                @if (!Document.GetBool(SiteKeys.NoSidebar))
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Under title -->
+                    <div id="undertitle">
+                        <div class="container-xl">
+                            <div class="row">
+                                @if (Document.GetBool(SiteKeys.NoSidebar))
                                 {
-                                    <div class="navbar navbar-expand-md navbar-dark p-0">
-                                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#left-sidebar" aria-controls="left-sidebar" aria-expanded="false" aria-label="Toggle navigation">
-                                            <span class="navbar-toggler-icon"></span>
-                                        </button>
+                                    <div class="offset-lg-2 col-12 col-lg-8 bg-white">
                                     </div>
                                 }
+                                else
+                                {
+                                    <div class="col-md-3 col-lg-2">
+                                    </div>
+                                    <div class="col-md-9 col-lg-8 bg-white">
+                                    </div>
+                                }
+                                <div class="col-lg-2 d-none d-lg-block">
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Under title -->
-                <div id="undertitle">
-                    <div class="container-xl">
-                        <div class="row">
-                            @if (Document.GetBool(SiteKeys.NoSidebar))
-                            {
-                                <div class="offset-lg-2 col-12 col-lg-8 bg-white">
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="col-md-3 col-lg-2">
-                                </div>
-                                <div class="col-md-9 col-lg-8 bg-white">
-                                </div>
-                            }
-                            <div class="col-lg-2 d-none d-lg-block">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                }
 
                 <!-- Body -->
                 <div class="flex-grow-1 d-flex flex-column">
                     @if (Document.GetBool(SiteKeys.NoContainer))
                     {
                         <div id="content" class="bg-white">
-                            @RenderBody()
+@* Render the body without indenting in case it contains things like directives *@
+@RenderBody()
                         </div>
                     }
                     else
@@ -158,12 +160,13 @@
                                         }
 
                                         <div id="content" class="offset-lg-2 col-12 col-lg-8 p-4 pt-md-0 bg-white">
-                                            @RenderBody()
+@* Render the body without indenting in case it contains things like directives *@
+@RenderBody()
                                         </div>
                                     }
                                     else
                                     {
-                                        <div class="col-md-3 col-lg-2 bg-body">
+                                        <div class="col-md-3 col-lg-2 p-md-0 m-md-0 bg-body">
                                             <div id="left-sidebar" class="sidebar sidebar-root collapse px-0 px-md-3 pt-3">
                                                 @if (IsSectionDefined(SectionNames.Sidebar))
                                                 {
@@ -176,7 +179,8 @@
                                             </div>
                                         </div>
                                         <div id="content" class="col-md-9 col-lg-8 p-4 pt-md-0 bg-white">
-                                            @RenderBody()
+@* Render the body without indenting in case it contains things like directives *@
+@RenderBody()
 
                                             @if (IsSectionDefined(SectionNames.ChildPages))
                                             {
@@ -189,7 +193,7 @@
                                         </div>
                                     }
                                 }
-                                <div class="col-lg-2 bg-body">
+                                <div class="col-lg-2 p-md-0 m-md-0 bg-body">
                                     <div id="right-sidebar" class="sidebar pl-3 pt-3">
                                         @if (IsSectionDefined(SectionNames.RightSidebar))
                                         {
@@ -220,39 +224,69 @@
             $(document).ready(function() {
                 quicklink.listen();
 
-				// Keeps the sidebar in view on wider viewports
-                let stickySidebar = function(id)
+                // Bootstrap tooltips
+                $('[data-toggle="tooltip"]').tooltip();
+
+				// Keeps the sidebars in view on wider viewports
+				let left = null;
+				let leftParent = null;
+				let right = null;
+				let rightParent = null;
+                function stickSidebars()
 				{
-                    let sidebar = $(id)[0];
-					if (window.innerWidth >= 768) {
-						let sidebarParent = $(id).parent()[0];
-						let sidebarParentRect = sidebarParent.getBoundingClientRect();
-						if (sidebarParentRect.bottom > window.innerHeight) {
-							sidebar.style.bottom = sidebarParentRect.bottom - window.innerHeight + "px";
-						} else {
-							sidebar.style.bottom = 0;
-						}
-						if (sidebarParentRect.top < 0) {
-							sidebar.style.top = -sidebarParentRect.top + "px";
-						} else {
-							sidebar.style.top = 0;
-						}
-					} else {
-						sidebar.style.top = 0;
-						sidebar.style.bottom = 0;
-					}
-				};
+				    if (left == null) {
+                        left = $('#left-sidebar');
+                        right = $('#right-sidebar');
+                    }
+                    if (left.length) {
+                        if (window.innerWidth >= 768) {
+                            if (leftParent == null) {
+                                leftParent = left.parent()[0];
+                            }
+                            if (leftParent) {
+                                let leftRect = leftParent.getBoundingClientRect();
+                                stickSidebar(left,  leftRect);
+                            }
+                        } else if (left.css('bottom') != 0) {
+                            left.css('bottom', '0');
+                        }
+                    }
+                    if (right.length) {
+                        if (window.innerWidth >= 768) {
+                            if (rightParent == null) {
+                                rightParent = right.parent()[0];
+                            }
+                            if (rightParent) {
+                                let rightRect = rightParent.getBoundingClientRect();
+                                stickSidebar(right,  rightRect);
+                            }
+                        } else if (right.css('bottom') != 0) {
+                            right.css('bottom', '0');
+                        }
+                    }
+				}
+				function stickSidebar(sidebar, rect) {
+                    // Bottom
+                    if (rect.bottom > window.innerHeight) {
+                        sidebar.css('bottom', rect.bottom - window.innerHeight + "px");
+                    } else {
+                        sidebar.css('bottom', 0);
+                    }
+                    // Top
+                    if (rect.top < 0) {
+                        sidebar.css('position', 'sticky');
+                    } else {
+                        sidebar.css('position', 'absolute');
+                    }
+				}
 				$(window).on("load", function() {
-					stickySidebar('#left-sidebar');
-					stickySidebar('#right-sidebar');
+				    stickSidebars();
 				});
                 $(window).scroll(function() {
-					stickySidebar('#left-sidebar');
-					stickySidebar('#right-sidebar');
+				    stickSidebars();
 				});
 				$(window).resize(function() {
-                    stickySidebar('#left-sidebar');
-					stickySidebar('#right-sidebar');
+				    stickSidebars();
 				})
 
                 // Mermaid diagrams

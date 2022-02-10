@@ -10,6 +10,6 @@
         string activeClass = assembly.GetString(CodeAnalysisKeys.SymbolId) == Document.GetString(CodeAnalysisKeys.SymbolId)
             ? "active"
             : null;
-        <div class="sidebar-nav-item sidebar-nav-children font-weight-normal @activeClass">@Context.GetTypeLink(assembly, false)</div>
+        <div class="sidebar-nav-item font-weight-normal @activeClass">@Context.GetTypeLink(assembly, false)</div>
     }
 }
