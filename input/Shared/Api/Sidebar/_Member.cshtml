@@ -38,7 +38,7 @@
                     string activeClass = constructor.GetString(CodeAnalysisKeys.SymbolId) == Document.GetString(CodeAnalysisKeys.SymbolId)
                         ? "active"
                         : null;
-                    <div class="sidebar-nav-item font-weight-normal @activeClass">@Context.GetTypeLink(constructor, false)</div>
+                    <div class="sidebar-nav-item @activeClass">@Context.GetTypeLink(constructor, false)</div>
                 }
             </div>
         }
@@ -57,7 +57,7 @@
                     string activeClass = member.GetString(CodeAnalysisKeys.SymbolId) == Document.GetString(CodeAnalysisKeys.SymbolId)
                         ? "active"
                         : null;
-                    <div class="sidebar-nav-item font-weight-normal @activeClass">@Context.GetTypeLink(member, false)</div>
+                    <div class="sidebar-nav-item @activeClass">@Context.GetTypeLink(member, false)</div>
                 }
             </div>
         }

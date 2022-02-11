@@ -30,7 +30,7 @@
 				@foreach(IDocument type in typeGroup.OrderBy(x => x.GetString(CodeAnalysisKeys.Name)))
 				{
 					string activeClass = type.GetString(CodeAnalysisKeys.SymbolId) == Document.GetString(CodeAnalysisKeys.SymbolId) ? "active" : null;
-					<div class="sidebar-nav-item font-weight-normal @activeClass">@Context.GetTypeLink(type, false)</div>
+					<div class="sidebar-nav-item @activeClass">@Context.GetTypeLink(type, false)</div>
 				}
 			</div>
 		}

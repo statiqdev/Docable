@@ -3,7 +3,9 @@
 }
 
 @section Sidebar {
-	@await Html.PartialAsync("Api/Sidebar/_" + Document.GetString(CodeAnalysisKeys.Kind))
+	<div class="sidebar-root">
+		@await Html.PartialAsync("Api/Sidebar/_" + Document.GetString(CodeAnalysisKeys.Kind))
+	</div>
 }
 
 @section Breadcrumbs {

@@ -141,8 +141,19 @@ h1 {
     margin-bottom: $spacer * 0.5;
 }
 
-h2, h3 {
-    color: lighten($primary, 10%);
+h1 * {
+    // Need to remove the text-fill from nested elements
+    background-image: none;
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: initial;
+}
+
+h2 {
+    color: darken(mix($gray-200, $primary, 70%), 20%);
+}
+
+h3 {
+    color: darken(mix($gray-200, $primary, 70%), 10%);
 }
 
 .border-muted {
@@ -341,13 +352,13 @@ code, code[class*="language-"], pre[class*="language-"] {
 .sidebar-root {
     // Root-level items
     & > .sidebar-nav-item {
-        margin-bottom: $spacer * 0.5;
         font-weight: $font-weight-bold;
+        color: $gray-800;
 
         &.sidebar-header {
             margin-bottom: $spacer * 0.25;
-            color: $gray-700;
-            font-size: $font-size-sm;
+            color: $gray-900;
+            font-size: $font-size-sm * 0.85;
             text-transform: uppercase;
         }
     }
@@ -355,21 +366,27 @@ code, code[class*="language-"], pre[class*="language-"] {
     & > .sidebar-nav-children {
         padding-top: $spacer * 0.5;
         font-size: $font-size-sm;
-        border-top: 1px solid $gray-300;
+        border-top: 3px solid $gray-400;
+        margin-bottom: $spacer;
 
         & > .sidebar-nav-children {
             font-size: $font-size-sm * 0.875;
             padding-left: $spacer * 0.5;
+
+            & > .sidebar-nav-item {
+                border-left: 4px solid $gray-200;
+
+                &.active {
+                    border-left: 4px solid darken($primary, 10%);
+                }
+            }
         }
     }
 
+
     // All items
     & .sidebar-nav-item {
-        padding-left: $spacer * 0.5;
-        padding-right: $spacer * 0.5;
-        padding-bottom: $spacer * 0.25;
-        padding-top: $spacer * 0.25;
-        margin-bottom: $spacer * 0.25;
+        padding: $spacer * 0.15 $spacer * 0.5;
         color: $gray-600;
 
         &.active {
@@ -399,8 +416,8 @@ code, code[class*="language-"], pre[class*="language-"] {
         }
     }
 
-    & .sidebar-nav-children {
-        margin-bottom: $spacer;
+    .sidebar-nav-children {
+        padding-bottom: $spacer * 0.25;
     }
 }
 
