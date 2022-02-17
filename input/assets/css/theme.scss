@@ -354,6 +354,11 @@ code, code[class*="language-"], pre[class*="language-"] {
     & > .sidebar-nav-item {
         font-weight: $font-weight-bold;
         color: $gray-800;
+        margin-bottom: $spacer;
+
+        &.has-children {
+            margin-bottom: 0;
+        }
 
         &.sidebar-header {
             margin-bottom: $spacer * 0.25;
