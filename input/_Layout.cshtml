@@ -247,8 +247,11 @@
                                 let leftRect = leftParent.getBoundingClientRect();
                                 stickSidebar(left,  leftRect);
                             }
-                        } else if (left.css('bottom') != 0) {
-                            left.css('bottom', '0');
+                        } else {
+                            left.css('position', 'relative');
+                            if (left.css('bottom') != 0) {
+                                left.css('bottom', '0');
+                            }
                         }
                     }
                     if (right.length) {
@@ -260,8 +263,11 @@
                                 let rightRect = rightParent.getBoundingClientRect();
                                 stickSidebar(right,  rightRect);
                             }
-                        } else if (right.css('bottom') != 0) {
-                            right.css('bottom', '0');
+                        } else {
+                            right.css('position', 'relative');
+                            if (right.css('bottom') != 0) {
+                                right.css('bottom', '0');
+                            }
                         }
                     }
 				}
