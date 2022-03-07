@@ -5,9 +5,25 @@
     string excerpt = Model.GetString(Keys.Excerpt);
     <div class="p-3 mb-2 bg-light page-box">
         <h4>@Html.DocumentLink(Model)</h4>
+
         @if (!string.IsNullOrEmpty(excerpt))
         {
             <div class="font-size-sm">@Html.Raw(excerpt)</div>
+        }
+
+        @{
+            DocumentList<IDocument> children = OutputPages.GetChildrenOf(Model);
+            if (!Model.GetBool(SiteKeys.NoChildPages) && children.Count > 0)
+            {
+                <ul class="list-inline border-top mt-2 pt-2 small">
+                    @foreach (IDocument child in children)
+                    {
+                        <li class="list-inline-item">
+                            @Html.DocumentLink(child)
+                        </li>
+                    }
+                </ul>
+            }
         }
     </div>
 }

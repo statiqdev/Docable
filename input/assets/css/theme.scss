@@ -161,7 +161,7 @@ h3 {
 }
 
 .h-section {
-    background-color: $gray-700;
+    background: -webkit-linear-gradient(darken($mixed, 5%), darken($primary, 5%));
     color: $white;
     padding: $spacer * 0.5;
     margin-bottom: $spacer * 1.5;
