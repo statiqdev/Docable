@@ -24,7 +24,7 @@
                                 <td>@Context.GetTypeLink(doc, Model.LinkTypeArguments)</td>
                                 @if(Model.HasSummary)
                                 {
-                                    <td>@Html.Raw(doc.GetString("Summary"))</td>
+                                    <td>@Html.Raw(doc.GetString(CodeAnalysisKeys.Summary))</td>
                                 }
                             </tr>
                         }

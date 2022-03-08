@@ -7,7 +7,15 @@ Title: API
 Order: 100
 Xref: api
 ---
+<h1>Namespaces</h1>
 @foreach (IDocument document in Model.GetChildren())
 {
-    <p>@Context.GetTypeLink(document) (Display name: @document.GetString(CodeAnalysisKeys.DisplayName))</p>
+    <h3>@Context.GetTypeLink(document)</h3>
+    string summary = document.GetString(CodeAnalysisKeys.Summary);
+    if (!summary.IsNullOrWhiteSpace())
+    {
+        <div>
+            @Html.Raw(summary)
+        </div>
+    }
 }
