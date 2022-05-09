@@ -3,13 +3,13 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
+    <!--
     <ItemGroup>
         <ProjectReference Include="..\..\Statiq.Docs\src\Statiq.Docs\Statiq.Docs.csproj" />
     </ItemGroup>
-
-    <!--
-    <ItemGroup>
-        <PackageReference Include="Statiq.Docs" Version="1.0.0-beta.52" />
-    </ItemGroup>
     -->
+
+    <ItemGroup>
+        <PackageReference Include="Statiq.Docs" Version="1.0.0-beta.3" />
+    </ItemGroup>
 </Project>
