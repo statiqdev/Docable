@@ -1,5 +1,8 @@
 @{
-    DocumentList<IDocument> children = OutputPages.GetChildrenOf(Document);
+    DocumentList<IDocument> children = OutputPages
+        .GetChildrenOf(Document)
+        .Where(x => !x.ContainsKey(Keys.RedirectTo))
+        .ToDocumentList();
     @if (!Document.GetBool(SiteKeys.NoChildPages) && children.Count > 0)
     {
         <h4 class="h-section mb-2">Child Pages</h4>

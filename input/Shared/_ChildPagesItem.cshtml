@@ -12,7 +12,10 @@
         }
 
         @{
-            DocumentList<IDocument> children = OutputPages.GetChildrenOf(Model);
+            DocumentList<IDocument> children = OutputPages
+                .GetChildrenOf(Model)
+                .Where(x => !x.ContainsKey(Keys.RedirectTo))
+                .ToDocumentList();
             if (!Model.GetBool(SiteKeys.NoChildPages) && children.Count > 0)
             {
                 <ul class="list-inline border-top mt-2 pt-2 small">
