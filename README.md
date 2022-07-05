@@ -4,7 +4,7 @@ Documentation theme for Statiq Docs.
 
 # Minimum Statiq Docs Version
 
-This theme requires Statiq Docs 1.0.0-beta.36 or later.
+This theme requires Statiq Docs 1.0.0-beta.2 or later.
 
 Using an earlier commit of the theme may allow the use of an earlier version of Statiq Web (look at the theme `themesettings.yml` file to determine the minimum Statiq Docs version for a given version of the theme).
 
