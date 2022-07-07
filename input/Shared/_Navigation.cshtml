@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-md navbar-light align-items-start">
-    <a class="navbar-brand" href="/">
+    <a class="navbar-brand" href="@Context.GetLink("/")">
         @{
             string logo = Document.GetString(SiteKeys.Logo);
             if (!logo.IsNullOrWhiteSpace())
