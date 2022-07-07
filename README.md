@@ -8,6 +8,22 @@ This theme requires Statiq Docs 1.0.0-beta.2 or later.
 
 Using an earlier commit of the theme may allow the use of an earlier version of Statiq Web (look at the theme `themesettings.yml` file to determine the minimum Statiq Docs version for a given version of the theme).
 
+# Installation
+
+Statiq themes go in a `theme` folder alongside your `input` folder. If your site is inside a git repository, you can add the theme as a git submodule:
+
+```
+git submodule add https://github.com/statiqdev/Docable.git theme
+```
+
+Alternatively you can clone the theme directly:
+
+```
+git clone https://github.com/statiqdev/Docable.git theme
+```
+
+Once inside the `theme` folder, Statiq will automatically recognize the theme. If you want to tweak the theme you can edit files directly in the `theme` folder or copy them to your `input` folder and edit them there.
+
 # Settings
 
 ## Global
