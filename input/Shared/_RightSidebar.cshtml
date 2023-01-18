@@ -10,7 +10,7 @@
             : null);
     if (headings?.Count > 0)
     {
-        <div class="@(editLink != null ? "border-bottom" : string.Empty) mb-3 sidebar-root">
+        <div class="@(!string.IsNullOrWhiteSpace(editLink) ? "border-bottom" : string.Empty) mb-3 sidebar-root">
             <div class="sidebar-nav-item sidebar-header">On This Page</div>
             <div class="sidebar-nav-children">
                 @foreach (IDocument heading in headings)
@@ -34,7 +34,7 @@
             </div>
         </div>
     }
-    if (editLink != null)
+    if (!string.IsNullOrWhiteSpace(editLink))
     {
         <p class="small font-weight-bold"><a href="@editLink" data-no-validate><i class="fad fa-pencil"></i> Edit This Page</a></p>
     }
