@@ -73,7 +73,9 @@
             }
             @await Html.PartialAsync("_Splash")
             @{
-                string section = Document.Destination.Segments.Length > 1 ? @Context.GetString(DocsKeys.ApiPath) : null;
+                string apiPath = Context.GetString(DocsKeys.ApiPath);
+                string section = Document.Destination.Segments.Length == 0 ? null :
+                    (new NormalizedPath(apiPath).ContainsDescendantOrSelf(Document.Destination) ? apiPath : Document.Destination.Segments[0].ToString());
                 IDocument root = OutputPages.Get(section + "/index.html");
             }
             <div class="flex-grow-1 d-flex flex-column">
