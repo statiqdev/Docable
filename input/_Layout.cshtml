@@ -36,6 +36,7 @@
         <script src="https://cdn.jsdelivr.net/npm/prismjs@1.26.0/components/prism-core.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/prismjs@1.26.0/plugins/autoloader/prism-autoloader.min.js" data-no-mirror></script>
         <script src="https://cdn.jsdelivr.net/npm/quicklink@2.0.0/dist/quicklink.umd.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
 	    
         <!-- Lunr search -->
         @if (Context.GetBool(WebKeys.GenerateSearchIndex))
@@ -233,6 +234,9 @@
 
         <!-- Scripts -->
         <script>
+            // Should run before document.ready. See https://github.com/bryanbraun/anchorjs/issues/69#issuecomment-255503575
+            anchors.add('#content h1:not(.no-anchor), #content h2:not(.no-anchor), #content h3:not(.no-anchor), #content h4:not(.no-anchor)');
+
             $(document).ready(function() {
                 quicklink.listen();
 
