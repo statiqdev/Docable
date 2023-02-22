@@ -69,5 +69,15 @@
 		/// A Google Fonts (or other) URL for use in a <c>link</c> element in the header.
 		/// </summary>
 		public const string FontLink = nameof(FontLink);
+
+        /// <summary>
+        /// Version of Bootstrap to use. Default is 4.4.1.
+        /// </summary>
+        public const string BootstrapVersion = nameof(BootstrapVersion);
+
+		/// <summary>
+		/// Integrity hash of Bootstrap vesion defined in <see cref="BootstrapVersion"/>. Default is integrity hash of Bootstrap 4.4.1.
+		/// </summary>
+        public const string BootstrapIntegrityHash = nameof(BootstrapIntegrityHash);
     }
 }
