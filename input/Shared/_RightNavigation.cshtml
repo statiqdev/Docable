@@ -3,6 +3,7 @@
     foreach(IDocument doc in OutputPages.GetChildrenOf(indexFileName)
         // Ensure the API path is added even if it's not a direct child of the root page
         .Concat(OutputPages.Get(NormalizedPath.Combine(Context.GetPath(DocsKeys.ApiPath), indexFileName)))
+        .Where(x => x is object) // The concat above may have produced a null document if no API documents were generated
         .Where(x => x.GetBool(SiteKeys.ShowInNavigation, true))
         // Ensure that duplicate API links aren't shown 
         .Distinct()
