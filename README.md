@@ -28,7 +28,7 @@ Once inside the `theme` folder, Statiq will automatically recognize the theme. I
 
 ## Global
 
-These are theme-specific settings and can be set in a settings file (in addition to any Statiq Docs settings or [Statiq Web settings](https://statiq.dev/web/configuration/settings)).
+These are theme-specific settings and can be set in a settings file (in addition to any Statiq Docs settings or [Statiq Web settings](https://www.statiq.dev/guide/configuration/web-settings)).
 
 - `SiteTitle`: The title of the site. This should be defined regardless of whether `Logo` is because it's used for the page title, alt attributes, etc. 
 - `Logo`: The logo file to use in the navigation bar (include a leading slash if providing a relative path). If not provided, the `SiteTitle` will be used.
