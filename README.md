@@ -34,6 +34,9 @@ These are theme-specific settings and can be set in a settings file (in addition
 - `Logo`: The logo file to use in the navigation bar (include a leading slash if providing a relative path). If not provided, the `SiteTitle` will be used.
 - `EditRoot`: The root link to use for editing pages, usually set to a value like `https://github.com/org/repo/edit/develop/input` (do not use a trailing slash).
 
+Since this theme is based on Bootstrap the `MarkdownExtensions` setting should be set to `bootstrap` to enable the [Markdig Bootstrap extension](https://github.com/xoofx/markdig/blob/master/src/Markdig.Tests/Specs/BootstrapSpecs.md).
+Enabling this extension ensure that images have the proper width and tables, blockquotes and figures are styled.
+
 ### Colors
 
 The following settings control the color scheme of the theme. For any that are not defined, the default Bootstrap values will be used.
