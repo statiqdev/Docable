@@ -80,6 +80,10 @@ ShowInNavigation: false
                 $("#search").val(queryParam);
                 runSearch($("#search").val());
             }
+
+            // Focus the search box
+            let searchEl = document.getElementById("search");
+            searchEl.focus();
         });
     </script>
 }
