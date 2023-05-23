@@ -1,7 +1,7 @@
 @{
     IReadOnlyList<IDocument> headings = Document
         .GetDocumentList(Keys.Headings)
-        ?.Where(x => x.GetInt(Keys.Level) == 1)
+        ?.Where(x => x.GetInt(Keys.Level) == Document.GetInt(SiteKeys.RightSidebarHeadingLevel, 1))
         .ToList();
     string editLink = Document.ContainsKey(SiteKeys.EditLink)
         ? Document.GetString(SiteKeys.EditLink)

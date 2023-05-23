@@ -33,6 +33,7 @@ These are theme-specific settings and can be set in a settings file (in addition
 - `SiteTitle`: The title of the site. This should be defined regardless of whether `Logo` is because it's used for the page title, alt attributes, etc. 
 - `Logo`: The logo file to use in the navigation bar (include a leading slash if providing a relative path). If not provided, the `SiteTitle` will be used.
 - `EditRoot`: The root link to use for editing pages, usually set to a value like `https://github.com/org/repo/edit/develop/input` (do not use a trailing slash).
+- `RightSidebarHeadingLevel`: Heading level which should be shown in the right sidebar. By default heading level 1 is shown.
 
 ### Colors
 

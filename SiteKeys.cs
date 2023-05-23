@@ -69,5 +69,10 @@
 		/// A Google Fonts (or other) URL for use in a <c>link</c> element in the header.
 		/// </summary>
 		public const string FontLink = nameof(FontLink);
+
+        /// <summary>
+        /// Heading level which should be shown in the right sidebar.
+        /// </summary>
+        public const string RightSidebarHeadingLevel = nameof(RightSidebarHeadingLevel);
     }
 }
