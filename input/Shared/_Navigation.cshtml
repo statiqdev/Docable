@@ -4,7 +4,7 @@
             string logo = Document.GetString(SiteKeys.Logo);
             if (!logo.IsNullOrWhiteSpace())
             {
-                <img id="logo" src="@logo" alt="@Document.GetString(SiteKeys.SiteTitle)">
+                <img id="logo" src="@Context.GetLink(logo)" alt="@Document.GetString(SiteKeys.SiteTitle)">
             }
             else
             {
