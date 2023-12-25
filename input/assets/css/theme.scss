@@ -237,7 +237,14 @@ code, code[class*="language-"], pre[class*="language-"] {
     background: $primary linear-gradient(155deg, $primary, $secondary) repeat-x !important;
 }
 
-
+#content {
+    ul:not([class]), ul[class=""] {
+        li {
+            padding-top: $spacer * .25;
+            padding-bottom: $spacer * .25;
+        }
+    }
+}
 
 #footer {
     background-color: $gray-900;
