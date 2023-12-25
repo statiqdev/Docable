@@ -458,20 +458,15 @@ code, code[class*="language-"], pre[class*="language-"] {
   }
 
 /* Search Button*/
-pre[class*="language-"] {
+.language {
     position: relative;
-    overflow: visible; 
-    margin: 5px 0;
-    border-radius: 10px;
-    padding-top: 30px !important;
 
     button {
-        position: absolute;
+        position: absolute; /* Change this line to fixed */
         top: 5px;
         right: 5px;
         font-size: 0.9rem;
-        padding: 0.15rem;
-        background-color: #828282;
+        background-color: #bcbabb;
         border: ridge 1px #7b7b7c;
         border-radius: 5px;
         text-shadow: #c4c4c4 0 0 2px;
@@ -480,7 +475,34 @@ pre[class*="language-"] {
 
         &:hover {
             cursor: pointer;
-            background-color: #bcbabb;
+            background-color: #828282;
         }
+    }
+}
+
+pre[class*="language-"] {
+    overflow: visible;
+    margin: 5px 0;
+    border-radius: 10px;
+    padding-top: 30px !important;
+
+    /* custom scrollbar */
+    &::-webkit-scrollbar {
+        width: 20px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #d6dee1;
+        border-radius: 20px;
+        border: 6px solid transparent;
+        background-clip: content-box;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: #a8bbbf;
     }
 }

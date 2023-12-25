@@ -369,7 +369,14 @@
                 // Add a title attribute for accessibility
                 button.title = "Copy Code";
 
-                block.appendChild(button);
+                // Wrap the pre element with a div of class "language"
+                let languageDiv = document.createElement("div");
+                languageDiv.classList.add("language");
+                block.parentNode.insertBefore(languageDiv, block);
+                languageDiv.appendChild(block);
+
+                // Append the button to the languageDiv
+                languageDiv.appendChild(button);
 
                 button.addEventListener("click", async () => {
                     await copyCode(block, button);
