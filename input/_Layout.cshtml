@@ -347,56 +347,56 @@
 				}
             });
 
-        // Create the SVG element
-        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-        svg.setAttribute("height", "16");
-        svg.setAttribute("width", "14");
-        svg.setAttribute("viewBox", "0 0 448 512");
-        svg.innerHTML = '<path d="M384 336H192c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16l140.1 0L400 115.9V320c0 8.8-7.2 16-16 16zM192 384H384c35.3 0 64-28.7 64-64V115.9c0-12.7-5.1-24.9-14.1-33.9L366.1 14.1c-9-9-21.2-14.1-33.9-14.1H192c-35.3 0-64 28.7-64 64V320c0 35.3 28.7 64 64 64zM64 128c-35.3 0-64 28.7-64 64V448c0 35.3 28.7 64 64 64H256c35.3 0 64-28.7 64-64V416H272v32c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V192c0-8.8 7.2-16 16-16H96V128H64z"/>';
+            // Create the SVG element
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+            svg.setAttribute("height", "16");
+            svg.setAttribute("width", "14");
+            svg.setAttribute("viewBox", "0 0 448 512");
+            svg.innerHTML = '<path d="M384 336H192c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16l140.1 0L400 115.9V320c0 8.8-7.2 16-16 16zM192 384H384c35.3 0 64-28.7 64-64V115.9c0-12.7-5.1-24.9-14.1-33.9L366.1 14.1c-9-9-21.2-14.1-33.9-14.1H192c-35.3 0-64 28.7-64 64V320c0 35.3 28.7 64 64 64zM64 128c-35.3 0-64 28.7-64 64V448c0 35.3 28.7 64 64 64H256c35.3 0 64-28.7 64-64V416H272v32c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V192c0-8.8 7.2-16 16-16H96V128H64z"/>';
 
-        // use a class selector if available
-        let blocks = document.querySelectorAll("pre");
+            // use a class selector if available
+            let blocks = document.querySelectorAll("pre");
 
-        blocks.forEach((block) => {
-            // only add button if browser supports Clipboard API
-            if (navigator.clipboard) {
-                let button = document.createElement("button");
+            blocks.forEach((block) => {
+                // only add button if browser supports Clipboard API
+                if (navigator.clipboard) {
+                    let button = document.createElement("button");
 
-                // Clone the SVG and append it to the button
-                button.appendChild(svg.cloneNode(true));
+                    // Clone the SVG and append it to the button
+                    button.appendChild(svg.cloneNode(true));
 
-                // Add a title attribute for accessibility
-                button.title = "Copy Code";
+                    // Add a title attribute for accessibility
+                    button.title = "Copy Code";
 
-                // Wrap the pre element with a div of class "language"
-                let languageDiv = document.createElement("div");
-                languageDiv.classList.add("language");
-                block.parentNode.insertBefore(languageDiv, block);
-                languageDiv.appendChild(block);
+                    // Wrap the pre element with a div of class "language"
+                    let languageDiv = document.createElement("div");
+                    languageDiv.classList.add("language");
+                    block.parentNode.insertBefore(languageDiv, block);
+                    languageDiv.appendChild(block);
 
-                // Append the button to the languageDiv
-                languageDiv.appendChild(button);
+                    // Append the button to the languageDiv
+                    languageDiv.appendChild(button);
 
-                button.addEventListener("click", async () => {
-                    await copyCode(block, button);
-                });
+                    button.addEventListener("click", async () => {
+                        await copyCode(block, button);
+                    });
+                }
+            });
+
+            async function copyCode(block, button) {
+                let code = block.querySelector("code");
+                let text = code.innerText;
+
+                await navigator.clipboard.writeText(text);
+
+                // visual feedback that task is completed
+                button.innerHTML = '<i class="fas fa-check"></i>';
+
+                setTimeout(() => {
+                    button.innerHTML = svg.cloneNode(true).outerHTML;
+                }, 1000);
             }
-        });
-
-        async function copyCode(block, button) {
-            let code = block.querySelector("code");
-            let text = code.innerText;
-
-            await navigator.clipboard.writeText(text);
-
-            // visual feedback that task is completed
-            button.innerHTML = '<i class="fas fa-check"></i>';
-
-            setTimeout(() => {
-                button.innerHTML = svg.cloneNode(true).outerHTML;
-            }, 1000);
-        }
 
         </script>
 
