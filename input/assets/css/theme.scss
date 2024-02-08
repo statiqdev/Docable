@@ -488,7 +488,7 @@ code, code[class*="language-"], pre[class*="language-"] {
 }
 
 pre[class*="language-"] {
-    overflow: visible;
+    overflow: auto;
     margin: 5px 0;
     border-radius: 10px;
     padding-top: 30px !important;
